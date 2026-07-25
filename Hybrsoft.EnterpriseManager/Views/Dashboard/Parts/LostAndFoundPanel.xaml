@@ -13,10 +13,10 @@
 		<DataTemplate x:Key="HeaderTemplate">
 			<Grid>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="40"/>
-					<ColumnDefinition Width="6*"/>
-					<ColumnDefinition Width="10*"/>
-					<ColumnDefinition Width="4*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthPicture}"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthStatus}"/>
 				</Grid.ColumnDefinitions>
 				<TextBlock x:Uid="/UI/LostAndFoundPanel_LostAndFoundID" Grid.Column="1" Style="{StaticResource ColumnHeaderStyle}" />
 				<TextBlock x:Uid="/UI/LostAndFoundPanel_DisplayName" Grid.Column="2" Style="{StaticResource ColumnHeaderStyle}" />
@@ -27,10 +27,10 @@
 		<DataTemplate x:Key="ItemTemplate" x:DataType="models:LostAndFoundModel">
 			<Grid>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="40"/>
-					<ColumnDefinition Width="6*"/>
-					<ColumnDefinition Width="10*"/>
-					<ColumnDefinition Width="4*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthPicture}"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthStatus}"/>
 				</Grid.ColumnDefinitions>
 				<Border Grid.Column="0" Margin="1" Padding="1">
 					<Image Source="{x:Bind ThumbnailSource, Mode=OneWay, Converter={StaticResource ObjectToImageConverter}}"

@@ -12,13 +12,13 @@
 
 	<UserControl.Resources>
 		<DataTemplate x:Key="HeaderTemplate">
-			<Grid>
+			<Grid Padding="16,0">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="2*"/>
-					<ColumnDefinition Width="4*"/>
-					<ColumnDefinition Width="1*"/>
-					<ColumnDefinition Width="1*"/>
-					<ColumnDefinition Width="2*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthYear}"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthShortNumber}"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthType}"/>
 				</Grid.ColumnDefinitions>
 				<TextBlock Grid.Column="0"
 						   x:Uid="/UI/ClassroomListUserControl_ColumnHeaderClassroomID"
@@ -42,11 +42,11 @@
 			<Grid Height="32">
 				<Grid Visibility="{x:Bind IsEmpty, Converter={StaticResource InverseBoolToVisibilityConverter}}">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="2*"/>
-						<ColumnDefinition Width="4*"/>
-						<ColumnDefinition Width="1*"/>
-						<ColumnDefinition Width="1*"/>
-						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthYear}"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthShortNumber}"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthType}"/>
 					</Grid.ColumnDefinitions>
 					<TextBlock Grid.Column="0" Text="{x:Bind ClassroomID}" Style="{StaticResource ColumnValueStyle}" />
 					<TextBlock Grid.Column="1" Text="{x:Bind Name, Mode=OneWay}" Style="{StaticResource ColumnValueStyle}" />

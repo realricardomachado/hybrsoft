@@ -16,6 +16,19 @@
 				<ResourceDictionary Source="/Styles/ToolBar.xaml" />
 				<!-- Other merged dictionaries here -->
 			</ResourceDictionary.MergedDictionaries>
+			<!-- Column Widths -->
+			<GridLength x:Key="ColumnWidthCurrency">120</GridLength>
+			<GridLength x:Key="ColumnWidthDate">160</GridLength>
+			<GridLength x:Key="ColumnWidthIcon">32</GridLength>
+			<GridLength x:Key="ColumnWidthID">180</GridLength>
+			<GridLength x:Key="ColumnWidthNumberDocument">160</GridLength>
+			<GridLength x:Key="ColumnWidthPhone">140</GridLength>
+			<GridLength x:Key="ColumnWidthPicture">40</GridLength>
+			<GridLength x:Key="ColumnWidthShortNumber">60</GridLength>
+			<GridLength x:Key="ColumnWidthStatus">160</GridLength>
+			<GridLength x:Key="ColumnWidthTime">70</GridLength>
+			<GridLength x:Key="ColumnWidthType">140</GridLength>
+			<GridLength x:Key="ColumnWidthYear">80</GridLength>
 			<!-- Other app resources here -->
 			<SolidColorBrush x:Key="DetailsViewBackgroundColor" Color="#F5F5F5" />
 			<!--  Converters  -->

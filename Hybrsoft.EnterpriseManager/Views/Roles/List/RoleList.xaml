@@ -12,10 +12,10 @@
 
 	<UserControl.Resources>
 		<DataTemplate x:Key="HeaderTemplate">
-			<Grid>
+			<Grid Padding="16,0">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="2*"/>
-					<ColumnDefinition Width="8*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 				<TextBlock Grid.Column="0" x:Uid="/UI/RoleListUserControl_ColumnHeaderRoleID" Style="{StaticResource ColumnHeaderStyle}" />
 				<TextBlock Grid.Column="1" x:Uid="/UI/RoleListUserControl_ColumnHeaderName" Style="{StaticResource ColumnHeaderStyle}" />
@@ -26,8 +26,8 @@
 			<Grid Height="32">
 				<Grid Visibility="{x:Bind IsEmpty, Converter={StaticResource InverseBoolToVisibilityConverter}}">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="2*"/>
-						<ColumnDefinition Width="8*"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 					<TextBlock Grid.Column="0" Text="{x:Bind RoleID}" Style="{StaticResource ColumnValueStyle}" />
 					<TextBlock Grid.Column="1" Text="{x:Bind Name, Mode=OneWay}" Style="{StaticResource ColumnValueStyle}" />

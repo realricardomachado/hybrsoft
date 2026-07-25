@@ -14,13 +14,13 @@
 
 	<UserControl.Resources>
 		<DataTemplate x:Key="HeaderTemplate">
-			<Grid>
+			<Grid Padding="16,0">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="55"/>
-					<ColumnDefinition Width="12*"/>
-					<ColumnDefinition Width="16*"/>
-					<ColumnDefinition Width="16*"/>
-					<ColumnDefinition Width="14*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthPicture}"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthStatus}"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthDate}"/>
 				</Grid.ColumnDefinitions>
 				<TextBlock Grid.Column="1" x:Uid="/UI/LostAndFoundListUserControl_ColumnHeaderLostAndFoundID" Style="{StaticResource ColumnHeaderStyle}" />
 				<TextBlock Grid.Column="2" x:Uid="/UI/LostAndFoundListUserControl_ColumnHeaderDisplayName" Style="{StaticResource ColumnHeaderStyle}" />
@@ -33,11 +33,11 @@
 			<Grid Height="32">
 				<Grid Visibility="{x:Bind IsEmpty, Converter={StaticResource InverseBoolToVisibilityConverter}}">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="40"/>
-						<ColumnDefinition Width="12*"/>
-						<ColumnDefinition Width="16*"/>
-						<ColumnDefinition Width="16*"/>
-						<ColumnDefinition Width="14*"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthPicture}"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthStatus}"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthDate}"/>
 					</Grid.ColumnDefinitions>
 					<Border Grid.Column="0" Margin="1" Padding="1">
 						<Image Source="{x:Bind ThumbnailSource, Mode=OneWay, Converter={StaticResource ObjectToImageConverter}}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" x:Phase="2" />

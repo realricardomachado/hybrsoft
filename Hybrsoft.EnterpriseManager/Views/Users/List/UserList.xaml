@@ -12,18 +12,17 @@
 
 	<UserControl.Resources>
 		<DataTemplate x:Key="HeaderTemplate">
-			<Grid>
+			<Grid Padding="16,0">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="55"/>
-					<ColumnDefinition Width="12*"/>
-					<ColumnDefinition Width="15*"/>
-					<ColumnDefinition Width="17*"/>
-					<ColumnDefinition Width="14*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthDate}"/>
 				</Grid.ColumnDefinitions>
-				<TextBlock Grid.Column="1" x:Uid="/UI/UserListUserControl_ColumnHeaderUserID" Style="{StaticResource ColumnHeaderStyle}" />
-				<TextBlock Grid.Column="2" x:Uid="/UI/UserListUserControl_ColumnHeaderName" Style="{StaticResource ColumnHeaderStyle}" />
-				<TextBlock Grid.Column="3" x:Uid="/UI/UserListUserControl_ColumnHeaderEmail" Style="{StaticResource ColumnHeaderStyle}" />
-				<TextBlock Grid.Column="4" x:Uid="/UI/UserListUserControl_ColumnHeaderLastModified" Style="{StaticResource ColumnHeaderStyle}" />
+				<TextBlock x:Uid="/UI/UserListUserControl_ColumnHeaderUserID" Style="{StaticResource ColumnHeaderStyle}" />
+				<TextBlock Grid.Column="1" x:Uid="/UI/UserListUserControl_ColumnHeaderName" Style="{StaticResource ColumnHeaderStyle}" />
+				<TextBlock Grid.Column="2" x:Uid="/UI/UserListUserControl_ColumnHeaderEmail" Style="{StaticResource ColumnHeaderStyle}" />
+				<TextBlock Grid.Column="3" x:Uid="/UI/UserListUserControl_ColumnHeaderLastModified" Style="{StaticResource ColumnHeaderStyle}" />
 			</Grid>
 		</DataTemplate>
 
@@ -31,18 +30,15 @@
 			<Grid Height="32">
 				<Grid Visibility="{x:Bind IsEmpty, Converter={StaticResource InverseBoolToVisibilityConverter}}">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="40"/>
-						<ColumnDefinition Width="12*"/>
-						<ColumnDefinition Width="15*"/>
-						<ColumnDefinition Width="17*"/>
-						<ColumnDefinition Width="14*"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthDate}"/>
 					</Grid.ColumnDefinitions>
-					<Border Grid.Column="0" Margin="1" Padding="1">
-					</Border>
-					<TextBlock Grid.Column="1" Text="{x:Bind UserID}" Style="{StaticResource ColumnValueStyle}" />
-					<TextBlock Grid.Column="2" Text="{x:Bind FullName, Mode=OneWay}" Style="{StaticResource ColumnValueStyle}" />
-					<TextBlock Grid.Column="3" Text="{x:Bind Email, Mode=OneWay}" Style="{StaticResource ColumnValueStyle}" />
-					<TextBlock Grid.Column="4" Text="{x:Bind LastModifiedOn, Mode=OneWay, Converter={StaticResource DateTimeFormatConverter}}" Style="{StaticResource ColumnValueStyle}" />
+					<TextBlock Text="{x:Bind UserID}" Style="{StaticResource ColumnValueStyle}" />
+					<TextBlock Grid.Column="1" Text="{x:Bind FullName, Mode=OneWay}" Style="{StaticResource ColumnValueStyle}" />
+					<TextBlock Grid.Column="2" Text="{x:Bind Email, Mode=OneWay}" Style="{StaticResource ColumnValueStyle}" />
+					<TextBlock Grid.Column="3" Text="{x:Bind LastModifiedOn, Mode=OneWay, Converter={StaticResource DateTimeFormatConverter}}" Style="{StaticResource ColumnValueStyle}" />
 				</Grid>
 			</Grid>
 		</DataTemplate>

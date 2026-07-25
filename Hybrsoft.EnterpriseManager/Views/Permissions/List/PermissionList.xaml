@@ -12,11 +12,11 @@
 
 	<UserControl.Resources>
 		<DataTemplate x:Key="HeaderTemplate">
-			<Grid>
+			<Grid Padding="16,0">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="2*"/>
-					<ColumnDefinition Width="2*"/>
-					<ColumnDefinition Width="2*"/>
+					<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+					<ColumnDefinition Width="3*"/>
+					<ColumnDefinition Width="3*"/>
 					<ColumnDefinition Width="4*"/>
 				</Grid.ColumnDefinitions>
 				<TextBlock Grid.Column="0"
@@ -38,9 +38,9 @@
 			<Grid Height="32">
 				<Grid Visibility="{x:Bind IsEmpty, Converter={StaticResource InverseBoolToVisibilityConverter}}">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="2*"/>
-						<ColumnDefinition Width="2*"/>
-						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="{StaticResource ColumnWidthID}"/>
+						<ColumnDefinition Width="3*"/>
+						<ColumnDefinition Width="3*"/>
 						<ColumnDefinition Width="4*"/>
 					</Grid.ColumnDefinitions>
 					<TextBlock Grid.Column="0" Text="{x:Bind PermissionID}" Style="{StaticResource ColumnValueStyle}" />
