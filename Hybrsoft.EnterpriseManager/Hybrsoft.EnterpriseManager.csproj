@@ -6,9 +6,8 @@
     <RootNamespace>Hybrsoft.EnterpriseManager</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
-    <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
-    <UseRidGraph>true</UseRidGraph>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
@@ -19,6 +18,8 @@
     <ApplicationIcon>Assets\default.ico</ApplicationIcon>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+	<PackageCertificateThumbprint>542FE05D2177BC57536EDFD0A5A6D28838B8B53E</PackageCertificateThumbprint>
+	<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Configuration\appsettings.json" />

@@ -9,7 +9,7 @@
 
   <Identity
     Name="Hybrsoft.EnterpriseManager"
-    Publisher="CN=ricar"
+    Publisher="CN=Hybrsoft Corporation"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="82d0e569-dd6d-4a5b-a64a-30072165dcee" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
