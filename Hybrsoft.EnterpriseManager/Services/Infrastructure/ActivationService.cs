@@ -40,7 +40,7 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 		{
 			if (args != null)
 			{
-				switch (args.Uri.AbsolutePath.ToLowerInvariant())
+				switch (args.Uri.Host.ToLowerInvariant())
 				{
 					case "relative":
 					case "relatives":
@@ -66,6 +66,17 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 							return ActivationInfo.Create<ClassroomDetailsViewModel>(new ClassroomDetailsArgs { ClassroomID = classroomID });
 						}
 						return ActivationInfo.Create<ClassroomsViewModel>(new ClassroomListArgs());
+					case "dismissiblestudents":
+						return ActivationInfo.Create<DismissibleStudentsViewModel>(new DismissibleStudentListArgs());
+					case "dismissals":
+						return ActivationInfo.Create<DismissalsViewModel>(new DismissalListArgs());
+					case "lostandfounds":
+						long lostAndFoundID = args.Uri.GetInt64Parameter("id");
+						if (lostAndFoundID > 0)
+						{
+							return ActivationInfo.Create<LostAndFoundDetailsViewModel>(new LostAndFoundDetailsArgs { LostAndFoundID = lostAndFoundID });
+						}
+						return ActivationInfo.Create<LostAndFoundsViewModel>(new LostAndFoundListArgs());
 					case "company":
 					case "companies":
 						long companyID = args.Uri.GetInt64Parameter("id");
@@ -74,6 +85,14 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 							return ActivationInfo.Create<CompanyDetailsViewModel>(new CompanyDetailsArgs { CompanyID = companyID });
 						}
 						return ActivationInfo.Create<CompaniesViewModel>(new CompanyListArgs());
+					case "subscription":
+					case "subscriptions":
+						long subscriptionID = args.Uri.GetInt64Parameter("id");
+						if (subscriptionID > 0)
+						{
+							return ActivationInfo.Create<SubscriptionDetailsViewModel>(new SubscriptionDetailsArgs { SubscriptionID = subscriptionID });
+						}
+						return ActivationInfo.Create<SubscriptionsViewModel>(new SubscriptionListArgs());
 					case "permission":
 					case "permissions":
 						long permissionID = args.Uri.GetInt64Parameter("id");

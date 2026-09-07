@@ -19,7 +19,7 @@
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 	<PackageCertificateThumbprint>542FE05D2177BC57536EDFD0A5A6D28838B8B53E</PackageCertificateThumbprint>
-	<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+	<AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Configuration\appsettings.json" />

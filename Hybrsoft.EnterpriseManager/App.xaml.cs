@@ -40,7 +40,7 @@ namespace Hybrsoft.EnterpriseManager
 		protected override async void OnLaunched(LaunchActivatedEventArgs args)
 		{
 			AppActivationArguments activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
-			await ActivateAsync(activatedArgs.Data as Windows.ApplicationModel.Activation.LaunchActivatedEventArgs);
+			await ActivateAsync(activatedArgs.Data as Windows.ApplicationModel.Activation.IActivatedEventArgs);
 		}
 
 		/// <summary>
