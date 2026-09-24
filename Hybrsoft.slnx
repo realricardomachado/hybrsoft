@@ -5,6 +5,9 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
   <Project Path="Hybrsoft.AspireAppHost/Hybrsoft.AspireAppHost.csproj" />
   <Project Path="Hybrsoft.AspireServiceDefaults/Hybrsoft.AspireServiceDefaults.csproj" />
   <Project Path="Hybrsoft.Database/Hybrsoft.Database.sqlproj" Id="4364da23-5537-4d53-ad26-ceaac4718faa">
