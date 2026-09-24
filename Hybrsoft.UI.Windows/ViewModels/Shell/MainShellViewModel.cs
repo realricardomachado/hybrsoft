@@ -1,7 +1,6 @@
 ﻿using Hybrsoft.Enums;
 using Hybrsoft.Infrastructure.Common;
 using Hybrsoft.Infrastructure.Models;
-using Hybrsoft.UI.Windows.Infrastructure.Common;
 using Hybrsoft.UI.Windows.Models;
 using Hybrsoft.UI.Windows.Services;
 using Microsoft.UI.Xaml;
@@ -15,7 +14,6 @@ namespace Hybrsoft.UI.Windows.ViewModels
 	public partial class MainShellViewModel(ILicenseService licenseService, ICommonServices commonServices) : ShellViewModel(commonServices)
 	{
 		private readonly ILicenseService _licenseService = licenseService;
-		private bool _hasSecurityAdministration;
 
 		private object _selectedItem;
 		public object SelectedItem
@@ -40,7 +38,6 @@ namespace Hybrsoft.UI.Windows.ViewModels
 
 		public override async Task LoadAsync(ShellArgs args)
 		{
-			_hasSecurityAdministration = AuthorizationService.HasPermission(Permissions.SecurityAdministration);
 			NavigationItems = [.. GetItems()];
 			await base.LoadAsync(args);
 			await UpdateAppLogBadge();
@@ -48,7 +45,7 @@ namespace Hybrsoft.UI.Windows.ViewModels
 
 		public async Task ShowLicenseExpirationWarningAsync()
 		{
-			if (!_hasSecurityAdministration)
+			if (!AuthorizationService.HasSecurityAdministrationPermission)
 			{
 				int? remainingDays = await _licenseService.GetRemainingDaysAsync();
 				if (remainingDays.HasValue && remainingDays.Value <= 5)
@@ -147,48 +144,7 @@ namespace Hybrsoft.UI.Windows.ViewModels
 				item.Children = [.. validChildren];
 				return item.Children.Any();
 			}
-			if (item.ViewModel == typeof(DashboardViewModel))
-			{
-				return _hasSecurityAdministration || AuthorizationService.HasPermission(Permissions.DashboardReader);
-			}
-			if (item.ViewModel == typeof(RelativesViewModel))
-			{
-				return _hasSecurityAdministration || AuthorizationService.HasPermission(Permissions.RelativeReader);
-			}
-			if (item.ViewModel == typeof(StudentsViewModel))
-			{
-				return _hasSecurityAdministration || AuthorizationService.HasPermission(Permissions.StudentReader);
-			}
-			if (item.ViewModel == typeof(ClassroomsViewModel))
-			{
-				return _hasSecurityAdministration || AuthorizationService.HasPermission(Permissions.ClassroomReader);
-			}
-			if (item.ViewModel == typeof(DismissibleStudentsViewModel))
-			{
-				return _hasSecurityAdministration || AuthorizationService.HasPermission(Permissions.DismissibleStudentsReader);
-			}
-			if (item.ViewModel == typeof(DismissalsViewModel))
-			{
-				return _hasSecurityAdministration || AuthorizationService.HasPermission(Permissions.DismissalReader);
-			}
-			if (item.ViewModel == typeof(LostAndFoundsViewModel))
-			{
-				return _hasSecurityAdministration || AuthorizationService.HasPermission(Permissions.LostAndFoundReader);
-			}
-			if (item.ViewModel == typeof(CompaniesViewModel))
-			{
-				return _hasSecurityAdministration || AuthorizationService.HasPermission(Permissions.CompanyReader);
-			}
-			if (item.ViewModel == typeof(SubscriptionsViewModel))
-			{
-				return _hasSecurityAdministration || AuthorizationService.HasPermission(Permissions.SubscriptionReader);
-			}
-
-			return (item.ViewModel == typeof(PermissionsViewModel)
-				|| item.ViewModel == typeof(RolesViewModel)
-				|| item.ViewModel == typeof(UsersViewModel)
-				|| item.ViewModel == typeof(AppLogsViewModel))
-				&& _hasSecurityAdministration;
+			return AuthorizationService.CanAccessViewModel(item.ViewModel);
 		}
 
 		private async void OnLogServiceMessage(ILogService logService, string message, AppLog log)
@@ -207,16 +163,13 @@ namespace Hybrsoft.UI.Windows.ViewModels
 			var request = new DataRequest<AppLog> { Where = r => !r.IsRead && r.AppType == AppType.EnterpriseManager };
 			int count = await LogService.GetLogsCountAsync(request);
 			var appLogsItem = NavigationItems.FirstOrDefault(f => f.Tag == nameof(AppLogsViewModel));
-			if (appLogsItem != null)
-			{
-				appLogsItem.Badge = count > 0
-					? new Microsoft.UI.Xaml.Controls.InfoBadge
-					{
-						Style = (Style)Application.Current.Resources["CriticalValueInfoBadgeStyle"],
-						Value = count
-					}
-					: null;
-			}
+			appLogsItem?.Badge = count > 0
+				? new Microsoft.UI.Xaml.Controls.InfoBadge
+				{
+					Style = (Style)Application.Current.Resources["CriticalValueInfoBadgeStyle"],
+					Value = count
+				}
+				: null;
 		}
 	}
 }

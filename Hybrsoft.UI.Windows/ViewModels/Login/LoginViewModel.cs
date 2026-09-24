@@ -3,6 +3,7 @@ using Hybrsoft.UI.Windows.Infrastructure.Common;
 using Hybrsoft.UI.Windows.Infrastructure.ViewModels;
 using Hybrsoft.UI.Windows.Models;
 using Hybrsoft.UI.Windows.Services;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -137,7 +138,7 @@ namespace Hybrsoft.UI.Windows.ViewModels
 			IsBusy = false;
 		}
 
-		private Task EnterApplication()
+		private async Task EnterApplication()
 		{
 			if (ViewModelArgs.UserInfo.AccountName != UserName)
 			{
@@ -148,6 +149,24 @@ namespace Hybrsoft.UI.Windows.ViewModels
 					LastName = _settingsService.UserLastName,
 					PictureSource = null
 				};
+			}
+			bool canAccessViewModel = AuthorizationService.CanAccessViewModel(ViewModelArgs.ViewModel);
+			if (!canAccessViewModel)
+			{
+				Type defaultViewModel = AuthorizationService.GetDefaultAccessibleViewModel();
+				if (defaultViewModel is not null)
+				{
+					ViewModelArgs.ViewModel = defaultViewModel;
+					ViewModelArgs.Parameter = null;
+				}
+				else
+				{
+					string title = ResourceService.GetString<LoginViewModel>(ResourceFiles.Errors, "AccessDenied");
+					string description = ResourceService.GetString<LoginViewModel>(ResourceFiles.Errors, "NoAccessibleFeatures");
+					await DialogService.ShowAsync(title, description);
+					IsBusy = false;
+					return;
+				}
 			}
 			if (_hasSecurityAdministration || _isLicenseValid)
 			{
@@ -163,7 +182,6 @@ namespace Hybrsoft.UI.Windows.ViewModels
 				};
 				NavigationService.Navigate<LicenseActivationViewModel>(ViewModelArgs);
 			}
-			return Task.CompletedTask;
 		}
 
 		private Result ValidateInput()
@@ -186,7 +204,7 @@ namespace Hybrsoft.UI.Windows.ViewModels
 		private async Task LoadPermissionsAsync()
 		{
 			await _lookupTables.LoadAfterLoginAsync();
-			_hasSecurityAdministration = AuthorizationService.HasPermission(Permissions.SecurityAdministration);
+			_hasSecurityAdministration = AuthorizationService.HasSecurityAdministrationPermission;
 		}
 
 		private async Task VerifyLicenseAsync()

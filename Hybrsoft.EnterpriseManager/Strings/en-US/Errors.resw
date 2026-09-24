@@ -387,4 +387,10 @@
   <data name="ProcessFailed" xml:space="preserve">
     <value>Process Failed.</value>
   </data>
+  <data name="LoginViewModel_AccessDenied" xml:space="preserve">
+    <value>Access denied</value>
+  </data>
+  <data name="LoginViewModel_NoAccessibleFeatures" xml:space="preserve">
+    <value>Your user account does not have permission to access any system features.</value>
+  </data>
 </root>

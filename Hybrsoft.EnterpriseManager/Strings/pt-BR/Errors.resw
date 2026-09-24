@@ -387,4 +387,10 @@
   <data name="ProcessFailed" xml:space="preserve">
     <value>Processo Falhou.</value>
   </data>
+  <data name="LoginViewModel_AccessDenied" xml:space="preserve">
+    <value>Acesso negado</value>
+  </data>
+  <data name="LoginViewModel_NoAccessibleFeatures" xml:space="preserve">
+    <value>Seu usuário não possui permissão para acessar nenhum recurso do sistema.</value>
+  </data>
 </root>
