@@ -90,8 +90,7 @@ namespace Hybrsoft.UI.Windows.ViewModels
 			_isSemanticSearchEnabled = _settingsService.IsSemanticSearchEnabled;
 
 			string licenseToPrefix = ResourceService.GetString<SettingsViewModel>(ResourceFiles.UI, "LicensedTo_Prefix");
-			var licenseTo = await _settingsService.GetLicensedToAsync();
-			LicenseTo = licenseToPrefix + licenseTo;
+			LicenseTo = licenseToPrefix + _settingsService.LicensedTo;
 
 			StatusReady();
 		}

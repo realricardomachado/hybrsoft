@@ -1,5 +1,4 @@
 ﻿using Hybrsoft.Enums;
-using System.Threading.Tasks;
 
 namespace Hybrsoft.UI.Windows.Services
 {
@@ -14,10 +13,6 @@ namespace Hybrsoft.UI.Windows.Services
 		EnvironmentType Environment { get; set; }
 		bool UseSemanticSearch { get; set; }
 		bool IsSemanticSearchEnabled { get; set; }
-
-		Task<string> GetLicensedToAsync();
-
-		Task<T> ReadSettingAsync<T>(string key);
-		Task SaveSettingAsync<T>(string key, T value);
+		string LicensedTo { get; }
 	}
 }

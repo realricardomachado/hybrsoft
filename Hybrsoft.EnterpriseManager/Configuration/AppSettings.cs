@@ -1,11 +1,8 @@
-﻿using Hybrsoft.Enums;
+﻿using CommunityToolkit.WinUI.Helpers;
+using Hybrsoft.Enums;
 using Hybrsoft.UI.Windows.Services;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.IO;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Graphics;
 using Windows.Storage;
@@ -20,25 +17,13 @@ namespace Hybrsoft.EnterpriseManager.Configuration
 		}
 		public static AppSettings Current { get; }
 
-		private static IWindowsSecurityService WindowsSecurityService => ServiceLocator.Current.GetService<IWindowsSecurityService>();
+		private static ISettingsStore SettingsStore
+			=> ServiceLocator.Current.GetService<ISettingsStore>();
 
-		public ApplicationDataContainer LocalSettings => ApplicationData.Current.LocalSettings;
+		private static ApplicationDataContainer LocalSettings => ApplicationData.Current.LocalSettings;
 
 		public string AppName => AppInfo.Current.DisplayInfo.DisplayName;
-		public string Version
-		{
-			get
-			{
-				var ver = Package.Current.Id.Version;
-				return $"{ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}";
-			}
-		}
-
-		public string Language
-		{
-			get => GetSettingsValue(nameof(Language), "\"en-US\"");
-			set => SetSettingsValue(nameof(Language), value);
-		}
+		public string Version => Package.Current.Id.Version.ToFormattedString();
 
 		public SizeInt32 WindowSizeDefault
 		{
@@ -47,161 +32,106 @@ namespace Hybrsoft.EnterpriseManager.Configuration
 		}
 		private int WindowWidth
 		{
-			get => GetSettingsValue(nameof(WindowWidth), 1280);
-			set => SetSettingsValue(nameof(WindowWidth), value);
+			get => ReadBootstrapSetting(nameof(WindowWidth), 1280);
+			set => LocalSettings.Values[nameof(WindowWidth)] = value;
 		}
 		private int WindowHeight
 		{
-			get => GetSettingsValue(nameof(WindowHeight), 840);
-			set => SetSettingsValue(nameof(WindowHeight), value);
+			get => ReadBootstrapSetting(nameof(WindowHeight), 840);
+			set => LocalSettings.Values[nameof(WindowHeight)] = value;
 		}
 
 		public long UserID
 		{
-			get => GetSettingsValue(nameof(UserID), default(long));
-			set => SetSettingsValue(nameof(UserID), value);
+			get => SettingsStore.Read<long>(nameof(UserID));
+			set => SettingsStore.Write(nameof(UserID), value);
 		}
 
 		public string UserName
 		{
-			get => GetSettingsValue(nameof(UserName), default(String));
-			set => SetSettingsValue(nameof(UserName), value);
+			get => SettingsStore.Read<string>(nameof(UserName));
+			set => SettingsStore.Write(nameof(UserName), value);
 		}
 
 		public string WindowsHelloPublicKeyHint
 		{
-			get => GetSettingsValue(nameof(WindowsHelloPublicKeyHint), default(String));
-			set => SetSettingsValue(nameof(WindowsHelloPublicKeyHint), value);
+			get => SettingsStore.Read<string>(nameof(WindowsHelloPublicKeyHint));
+			set => SettingsStore.Write(nameof(WindowsHelloPublicKeyHint), value);
 		}
 
 		public DataProviderType DataProvider
 		{
-			get => (DataProviderType)GetSettingsValue(nameof(DataProvider), (int)DataProviderType.SQLServer);
-			set => SetSettingsValue(nameof(DataProvider), (int)value);
+			get => SettingsStore.ReadEnum(nameof(DataProvider), DataProviderType.SQLServer);
+			set => SettingsStore.WriteEnum(nameof(DataProvider), value);
 		}
 
 		public string SQLServerConnectionString
 		{
-			get
-			{
-				string defaultConnectionString = GetDefaultSQLServerConnectionString(AppConfig.IsDevelopment);
-				var valueEncrypted = GetSettingsValueAsync(nameof(SQLServerConnectionString), WindowsSecurityService.EncryptData(defaultConnectionString)).Result;
-				return WindowsSecurityService.DecryptData<string>(valueEncrypted);
-			}
-			set => SetSettingsValueAsync(nameof(SQLServerConnectionString), WindowsSecurityService.EncryptData(value));
+			get => SettingsStore.ReadSecure(nameof(SQLServerConnectionString), GetDefaultSQLServerConnectionString());
+			set => SettingsStore.WriteSecure(nameof(SQLServerConnectionString), value);
 		}
+
+		public bool HasStoredSQLServerConnectionString => SettingsStore.TryRead(nameof(SQLServerConnectionString));
 
 		public bool IsRandomErrorsEnabled
 		{
-			get => GetSettingsValue(nameof(IsRandomErrorsEnabled), false);
-			set => SetSettingsValue(nameof(IsRandomErrorsEnabled), value);
+			get => SettingsStore.Read<bool>(nameof(IsRandomErrorsEnabled));
+			set => SettingsStore.Write(nameof(IsRandomErrorsEnabled), value);
 		}
 
 		public char PasswordChar
 		{
-			get => GetSettingsValue(nameof(PasswordChar), '*');
-			set => SetSettingsValue(nameof(PasswordChar), value);
+			get => SettingsStore.Read(nameof(PasswordChar), '*');
+			set => SettingsStore.Write(nameof(PasswordChar), value);
 		}
 
 		public string JwtToken
 		{
-			get
-			{
-				var encryptedData = GetSettingsValueAsync(nameof(JwtToken), WindowsSecurityService.EncryptData(default(string))).Result;
-				return WindowsSecurityService.DecryptData<string>(encryptedData);
-			}
-			set => SetSettingsValueAsync(nameof(JwtToken), WindowsSecurityService.EncryptData(value));
+			get => SettingsStore.ReadSecure<string>(nameof(JwtToken));
+			set => SettingsStore.WriteSecure(nameof(JwtToken), value);
 		}
 
 		public DateTimeOffset JwtTokenExpiration
 		{
-			get
-			{
-				var encryptedData = GetSettingsValueAsync(nameof(JwtTokenExpiration), WindowsSecurityService.EncryptData(DateTimeOffset.MinValue)).Result;
-				return WindowsSecurityService.DecryptData<DateTimeOffset>(encryptedData);
-			}
-			set => SetSettingsValueAsync(nameof(JwtTokenExpiration), WindowsSecurityService.EncryptData(value));
+			get => SettingsStore.ReadSecure(nameof(JwtTokenExpiration), DateTimeOffset.MinValue);
+			set => SettingsStore.WriteSecure(nameof(JwtTokenExpiration), value);
 		}
 
 		public bool UseSemanticSearch
 		{
-			get => GetSettingsValue(nameof(UseSemanticSearch), false);
-			set => SetSettingsValue(nameof(UseSemanticSearch), value);
+			get => SettingsStore.Read<bool>(nameof(UseSemanticSearch));
+			set => SettingsStore.Write(nameof(UseSemanticSearch), value);
 		}
 
-		private TResult GetSettingsValue<TResult>(string name, TResult defaultValue)
+		private static T ReadBootstrapSetting<T>(string key, T defaultValue = default)
 		{
 			try
 			{
-				if (!LocalSettings.Values.TryGetValue(name, out object value))
-				{
-					LocalSettings.Values[name] = defaultValue;
+				if (!LocalSettings.Values.TryGetValue(key, out var value))
 					return defaultValue;
-				}
-				if (value is TResult typedValue)
-				{
-					return typedValue;
-				}
-				return (TResult)Convert.ChangeType(value, typeof(TResult));
+
+				if (value is T typed)
+					return typed;
+
+				return (T)Convert.ChangeType(value, typeof(T));
 			}
 			catch (Exception ex)
 			{
-				System.Diagnostics.Debug.WriteLine(ex.Message);
+				System.Diagnostics.Debug.WriteLine($"Error reading bootstrap setting '{key}': {ex.Message}");
 				return defaultValue;
 			}
 		}
-		private void SetSettingsValue(string name, object value)
-		{
-			LocalSettings.Values[name] = value;
-		}
 
-		private async Task<TResult> GetSettingsValueAsync<TResult>(string key, TResult defaultValue)
+		private static string GetDefaultSQLServerConnectionString()
 		{
-			try
-			{
-				if (LocalSettings.Values.TryGetValue(key, out object value))
-				{
-					using MemoryStream memoryStream = new(Encoding.UTF8.GetBytes((string)value));
-					return await JsonSerializer.DeserializeAsync<TResult>(memoryStream);
-				}
-
-				SetSettingsValueAsync(key, defaultValue);
-				return defaultValue;
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(ex.Message);
-				return defaultValue;
-			}
-		}
-		private async void SetSettingsValueAsync(string key, object value)
-		{
-			try
-			{
-				using MemoryStream memoryStream = new();
-				await JsonSerializer.SerializeAsync(memoryStream, value);
-				memoryStream.Position = 0; // Reset the stream position
-
-				using StreamReader reader = new(memoryStream);
-				string jsonString = await reader.ReadToEndAsync();
-				LocalSettings.Values[key] = jsonString;
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(ex.Message);
-			}
-		}
-
-		private static string GetDefaultSQLServerConnectionString(bool isDevelopment)
-		{
-			if (isDevelopment)
-			{
-				return new ConfigurationBuilder()
-					.AddUserSecrets<AppSettings>(false, true)
-					.Build()
-					.GetConnectionString("SQLServerDev");
-			}
-			return AppConfig.SQLServerProdConnectionString;
+#if DEBUG
+			return new ConfigurationBuilder()
+				.AddUserSecrets<AppSettings>(optional: true)
+				.Build()
+				.GetConnectionString("SQLServerDev") ?? string.Empty;
+#else
+			return string.Empty;
+#endif
 		}
 	}
 }

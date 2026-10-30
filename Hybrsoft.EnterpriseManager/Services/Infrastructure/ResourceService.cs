@@ -21,14 +21,14 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 		private LanguageModel _currentLanguageItem = new() { DisplayName = "English", Tag = "en-US" };
 		public List<LanguageModel> LanguageOptions { get; } = [];
 
-		public ResourceService(ISettingsService settingsService)
+		public ResourceService(ISettingsStore settingsStore)
 		{
 			_resourceManager = new ResourceManager();
 			_resourceContext = _resourceManager.CreateResourceContext();
-			_settingsService = settingsService;
+			_settingsStore = settingsStore;
 		}
 
-		private readonly ISettingsService _settingsService;
+		private readonly ISettingsStore _settingsStore;
 
 		public async Task InitializeAsync()
 		{
@@ -85,7 +85,7 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 				ApplicationLanguages.PrimaryLanguageOverride = language.Tag;
 				_resourceContext.QualifierValues["Language"] = language.Tag;
 
-				await _settingsService.SaveSettingAsync(LanguageSettingsKey, language.Tag);
+				_settingsStore.Write(LanguageSettingsKey, language.Tag);
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 
 		private async Task<string> GetLanguageTagFromSettingsAsync()
 		{
-			return await _settingsService.ReadSettingAsync<string>(LanguageSettingsKey);
+			return _settingsStore.Read<string>(LanguageSettingsKey);
 		}
 
 		private void RegisterLanguageFromResource()
@@ -111,7 +111,11 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 			for (uint i = 0; i < resourceMap.ResourceCount; i++)
 			{
 				var resource = resourceMap.GetValueByIndex(i);
-				LanguageOptions.Add(new LanguageModel() { DisplayName = resource.Value.ValueAsString, Tag = resource.Key });
+				LanguageOptions.Add(new LanguageModel()
+				{
+					DisplayName = resource.Value.ValueAsString,
+					Tag = resource.Key
+				});
 			}
 		}
 	}

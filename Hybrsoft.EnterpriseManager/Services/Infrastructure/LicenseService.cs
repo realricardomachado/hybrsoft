@@ -14,9 +14,8 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 {
 	public class LicenseService(
 		IUserService userService,
-		IWindowsSecurityService windowsSecurityService,
 		INetworkService networkService,
-		ISettingsService settingsService,
+		ISettingsStore settingsStore,
 		ILogService logService) : ILicenseService
 	{
 		private const string _licenseData = "LicenseData";
@@ -25,9 +24,8 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 		private string _jwtToken;
 
 		private readonly IUserService _userService = userService;
-		private readonly IWindowsSecurityService _windowsSecurityService = windowsSecurityService;
 		private readonly INetworkService _networkService = networkService;
-		private readonly ISettingsService _settingsService = settingsService;
+		private readonly ISettingsStore _settingsStore = settingsStore;
 		private readonly ILogService _logService = logService;
 
 		public async Task<LicenseResponse> ActivateSubscriptionOnlineAsync(LicenseActivationModel license)
@@ -84,16 +82,16 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 
 		public void SaveLicenseLocally(SubscriptionInfoDto model)
 		{
-			var encryptedData = _windowsSecurityService.EncryptData(model);
-			_settingsService.SaveSettingAsync(_licenseData, encryptedData);
-			_settingsService.SaveSettingAsync(_lastLicenseSync, DateTimeOffset.Now.ToString("o"));
+			_settingsStore.WriteSecure(_licenseData, model);
+			_settingsStore.Write(_lastLicenseSync, DateTimeOffset.Now.ToString("o"));
 		}
 
 		public async Task<bool> IsLicenseValidOfflineAsync()
 		{
-			var encryptedData = await _settingsService.ReadSettingAsync<string>(_licenseData);
-			var lastSyncStr = await _settingsService.ReadSettingAsync<string>(_lastLicenseSync);
-			if (string.IsNullOrEmpty(encryptedData) || string.IsNullOrEmpty(lastSyncStr))
+			var license = _settingsStore.ReadSecure<SubscriptionInfoDto>(_licenseData);
+			var lastSyncStr = _settingsStore.Read<string>(_lastLicenseSync);
+
+			if (license is null || string.IsNullOrEmpty(lastSyncStr))
 				return false;
 
 			if (DateTimeOffset.TryParse(lastSyncStr, out DateTimeOffset lastSync))
@@ -104,7 +102,6 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 
 				try
 				{
-					var license = _windowsSecurityService.DecryptData<SubscriptionInfoDto>(encryptedData);
 					return license.IsActivated && license.ExpirationDate > DateTimeOffset.Now;
 				}
 				catch
@@ -180,13 +177,12 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 
 		public async Task<int?> GetRemainingDaysAsync()
 		{
-			var encryptedData = await _settingsService.ReadSettingAsync<string>(_licenseData);
-			if (string.IsNullOrEmpty(encryptedData))
-				return null;
-
 			try
 			{
-				var license = _windowsSecurityService.DecryptData<SubscriptionInfoDto>(encryptedData);
+				var license = _settingsStore.ReadSecure<SubscriptionInfoDto>(_licenseData);
+
+				if (license is null)
+					return null;
 
 				if (!license.IsActivated || license.ExpirationDate <= DateTimeOffset.Now)
 					return 0;

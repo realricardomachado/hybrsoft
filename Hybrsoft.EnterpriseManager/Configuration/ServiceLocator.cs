@@ -21,6 +21,7 @@ namespace Hybrsoft.EnterpriseManager.Configuration
 
 		public static void Configure(IServiceCollection serviceCollection)
 		{
+			serviceCollection.AddSingleton<ISettingsStore, SettingsStore>();
 			serviceCollection.AddSingleton<ISettingsService, SettingsService>();
 			serviceCollection.AddSingleton<IDataServiceFactory, DataServiceFactory>();
 			serviceCollection.AddSingleton<ILookupTables, LookupTables>();

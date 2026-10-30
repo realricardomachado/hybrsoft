@@ -2,16 +2,12 @@
 using Hybrsoft.EnterpriseManager.Configuration;
 using Hybrsoft.Enums;
 using Hybrsoft.UI.Windows.Services;
-using System.IO;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 {
-	public class SettingsService(IWindowsSecurityService windowsSecurityService) : ISettingsService
+	public class SettingsService(ISettingsStore settingsStore) : ISettingsService
 	{
-		private readonly IWindowsSecurityService _windowsSecurityService = windowsSecurityService;
+		private readonly ISettingsStore _settingsStore = settingsStore;
 
 		public string AppName => AppSettings.Current.AppName;
 		public string Version => AppSettings.Current.Version;
@@ -24,14 +20,14 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 
 		public string UserFirstName
 		{
-			get => ReadSettingAsync<string>(nameof(UserFirstName)).Result;
-			set => SaveSettingAsync(nameof(UserFirstName), value).Wait();
+			get => _settingsStore.Read<string>(nameof(UserFirstName));
+			set => _settingsStore.Write(nameof(UserFirstName), value);
 		}
 
 		public string UserLastName
 		{
-			get => ReadSettingAsync<string>(nameof(UserLastName)).Result;
-			set => SaveSettingAsync(nameof(UserLastName), value).Wait();
+			get => _settingsStore.Read<string>(nameof(UserLastName));
+			set => _settingsStore.Write(nameof(UserLastName), value);
 		}
 
 		public char PasswordChar
@@ -41,62 +37,25 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 
 		public EnvironmentType Environment
 		{
-			get => ReadSettingAsync<EnvironmentType>(nameof(Environment)).Result;
-			set => SaveSettingAsync<EnvironmentType>(nameof(Environment), value).Wait();
+			get => _settingsStore.ReadEnum(nameof(Environment), EnvironmentType.Development);
+			set => _settingsStore.WriteEnum(nameof(Environment), value);
 		}
 
 		public bool UseSemanticSearch
 		{
-			get => ReadSettingAsync<bool>(nameof(UseSemanticSearch)).Result;
-			set => SaveSettingAsync(nameof(UseSemanticSearch), value).Wait();
+			get => AppSettings.Current.UseSemanticSearch;
+			set => AppSettings.Current.UseSemanticSearch = value;
 		}
 
 		public bool IsSemanticSearchEnabled { get; set; } = true;
 
-		public async Task<string> GetLicensedToAsync()
+		public string LicensedTo
 		{
-			var encryptedData = await ReadSettingAsync<string>("LicenseData");
-			var license = _windowsSecurityService.DecryptData<SubscriptionInfoDto>(encryptedData);
-			return license?.LicensedTo ?? "Security Administration";
-		}
-
-		public async Task<T> ReadSettingAsync<T>(string key)
-		{
-			if (AppSettings.Current.LocalSettings.Values.TryGetValue(key, out object value))
+			get
 			{
-				if (value is string s)
-				{
-					try
-					{
-						using MemoryStream memoryStream = new(Encoding.UTF8.GetBytes(s));
-						return await JsonSerializer.DeserializeAsync<T>(memoryStream);
-					}
-					catch (JsonException)
-					{
-						if (typeof(T) == typeof(string))
-						{
-							return (T)value;
-						}
-					}
-				}
-				else if (value is T t)
-				{
-					return t;
-				}
+				var license = _settingsStore.ReadSecure<SubscriptionInfoDto>("LicenseData");
+				return license?.LicensedTo ?? "Security Administration";
 			}
-
-			return default;
-		}
-
-		public async Task SaveSettingAsync<T>(string key, T value)
-		{
-			using MemoryStream memoryStream = new();
-			await JsonSerializer.SerializeAsync(memoryStream, value);
-			memoryStream.Position = 0; // Reset the stream position
-
-			using StreamReader reader = new(memoryStream);
-			string jsonString = await reader.ReadToEndAsync();
-			AppSettings.Current.LocalSettings.Values[key] = jsonString;
 		}
 	}
 }
