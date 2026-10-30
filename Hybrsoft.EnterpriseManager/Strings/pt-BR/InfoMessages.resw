@@ -579,4 +579,19 @@
   <data name="SettingsViewModel_SetupCompletedSmartSearchIsNowAvailable" xml:space="preserve">
     <value>Configuração concluída. A busca inteligente já está disponível.</value>
   </data>
+  <data name="Startup_CheckingConfiguration" xml:space="preserve">
+    <value>Verificando configuração</value>
+  </data>
+  <data name="Startup_CheckingDatabaseConnection" xml:space="preserve">
+    <value>Verificando conexão com o banco de dados</value>
+  </data>
+  <data name="Startup_WaitingForDatabaseConfiguration" xml:space="preserve">
+    <value>Aguardando configuração do banco de dados</value>
+  </data>
+  <data name="Startup_LoadingLookupData" xml:space="preserve">
+    <value>Carregando dados de apoio</value>
+  </data>
+  <data name="Startup_Completed" xml:space="preserve">
+    <value>Concluído</value>
+  </data>
 </root>

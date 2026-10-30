@@ -1,0 +1,39 @@
+<UserControl
+	x:Class="Hybrsoft.EnterpriseManager.Views.ConnectionSetup.ConnectionSetupView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<ScrollViewer MaxHeight="620" VerticalScrollBarVisibility="Auto">
+		<StackPanel Width="460" Spacing="12">
+			<TextBlock x:Uid="/UI/ConnectionSetupView_Description"
+					   TextWrapping="WrapWholeWords"
+					   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+			<TextBox x:Uid="/UI/ConnectionSetupView_ServerTextBox" x:Name="ServerTextBox" />
+			<TextBox x:Uid="/UI/ConnectionSetupView_DatabaseTextBox" x:Name="DatabaseTextBox" />
+			<ComboBox x:Uid="/UI/ConnectionSetupView_AuthenticationComboBox" x:Name="AuthenticationComboBox"
+					  SelectedIndex="0"
+					  SelectionChanged="AuthenticationComboBox_SelectionChanged">
+				<ComboBoxItem x:Uid="/UI/ConnectionSetupView_SqlAuthentication" />
+				<ComboBoxItem x:Uid="/UI/ConnectionSetupView_WindowsAuthentication" />
+			</ComboBox>
+			<StackPanel x:Name="SqlCredentialsPanel" Spacing="12">
+				<TextBox x:Uid="/UI/ConnectionSetupView_UserNameTextBox" x:Name="UserNameTextBox" />
+				<PasswordBox x:Uid="/UI/ConnectionSetupView_PasswordBox" x:Name="PasswordBox" />
+			</StackPanel>
+			<ToggleSwitch x:Uid="/UI/ConnectionSetupView_TrustServerCertificateToggle"
+						  x:Name="TrustServerCertificateToggle"
+						  IsOn="False" />
+
+			<InfoBar x:Name="ResultInfoBar"
+					 IsOpen="False"
+					 IsClosable="False"
+					 IsIconVisible="True"
+					 Message="" />
+
+			<Button x:Uid="/UI/ConnectionSetupView_TestButton" x:Name="TestButton"
+					HorizontalAlignment="Left"
+					Click="TestButton_Click" />
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

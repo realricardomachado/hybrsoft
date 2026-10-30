@@ -4,6 +4,7 @@ using Hybrsoft.EnterpriseManager.Services;
 using Hybrsoft.EnterpriseManager.Views;
 using Hybrsoft.Enums;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Threading.Tasks;
 
 namespace Hybrsoft.EnterpriseManager.Configuration
@@ -12,28 +13,31 @@ namespace Hybrsoft.EnterpriseManager.Configuration
 	{
 		static private readonly ServiceCollection _serviceCollection = new();
 
-		static public async Task ConfigureAsync()
+		static public async Task InitializeCoreAsync(IProgress<StartupProgress> progress = null)
 		{
+			progress?.Report(new(10, "Preparing services"));
 			ServiceLocator.Configure(_serviceCollection);
 
 			AppConfig.Initialize();
 
 			ConfigureNavigation();
 
-			var settingsService = ServiceLocator.Current.GetService<ISettingsService>();
-#if DEBUG
-			settingsService.Environment = EnvironmentType.Development;
-#else
-			settingsService.Environment = EnvironmentType.Production;
-#endif
-
-			var logService = ServiceLocator.Current.GetService<ILogService>();
-			await logService.WriteAsync(LogType.Information, "Startup", "Configuration", "Application Start", $"Application started.");
-
+			progress?.Report(new(30, "Initializing resources"));
 			var resourceService = ServiceLocator.Current.GetService<IResourceService>();
 			await resourceService.InitializeAsync();
 
+			progress?.Report(new(40, resourceService.GetString(ResourceFiles.InfoMessages, "Startup_CheckingConfiguration")));
+		}
+
+		static public async Task InitializeDatabaseAsync(IProgress<StartupProgress> progress = null)
+		{
+			var resourceService = ServiceLocator.Current.GetService<IResourceService>();
+			var logService = ServiceLocator.Current.GetService<ILogService>();
+			await logService.WriteAsync(LogType.Information, "Startup", "Configuration", "Application Start", $"Application started.");
+
+			progress?.Report(new(70, resourceService.GetString(ResourceFiles.InfoMessages, "Startup_LoadingLookupData")));
 			await ConfigureLookupTables();
+			progress?.Report(new(100, resourceService.GetString(ResourceFiles.InfoMessages, "Startup_Completed")));
 		}
 
 		private static void ConfigureNavigation()

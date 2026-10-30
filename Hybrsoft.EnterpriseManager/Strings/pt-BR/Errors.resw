@@ -393,4 +393,13 @@
   <data name="LoginViewModel_NoAccessibleFeatures" xml:space="preserve">
     <value>Seu usuário não possui permissão para acessar nenhum recurso do sistema.</value>
   </data>
+  <data name="DatabaseConnection_MissingConnectionString" xml:space="preserve">
+    <value>Informe os dados de conexão com o banco de dados.</value>
+  </data>
+  <data name="DatabaseConnection_InvalidConnectionString" xml:space="preserve">
+    <value>Os dados de conexão com o banco de dados são inválidos.</value>
+  </data>
+  <data name="DatabaseConnection_ConnectionFailed" xml:space="preserve">
+    <value>Não foi possível conectar ao banco de dados.</value>
+  </data>
 </root>

@@ -579,4 +579,19 @@
   <data name="SettingsViewModel_SetupCompletedSmartSearchIsNowAvailable" xml:space="preserve">
     <value>Setup completed. Smart search is now available.</value>
   </data>
+  <data name="Startup_CheckingConfiguration" xml:space="preserve">
+    <value>Checking configuration</value>
+  </data>
+  <data name="Startup_CheckingDatabaseConnection" xml:space="preserve">
+    <value>Checking database connection</value>
+  </data>
+  <data name="Startup_WaitingForDatabaseConfiguration" xml:space="preserve">
+    <value>Waiting for database configuration</value>
+  </data>
+  <data name="Startup_LoadingLookupData" xml:space="preserve">
+    <value>Loading lookup data</value>
+  </data>
+  <data name="Startup_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
 </root>

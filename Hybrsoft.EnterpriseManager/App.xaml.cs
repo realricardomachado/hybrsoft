@@ -53,7 +53,27 @@ namespace Hybrsoft.EnterpriseManager
 			await splash_Screen.SetWindowPositionToCenterAsync();
 			splash_Screen.Activate();
 			splash_Screen.Closed += (_, _) => { ServiceLocator.DisposeByViewID(splash_Screen.AppWindow.Id.Value); };
-			await Task.Delay(2000);
+			await Task.Yield();
+			IProgress<StartupProgress> progress = new Progress<StartupProgress>(splash_Screen.ReportProgress);
+
+			await Startup.InitializeCoreAsync(progress);
+
+			var connectionConfigurationService = ServiceLocator.Current.GetService<IConnectionConfigurationService>();
+			var resourceService = ServiceLocator.Current.GetService<IResourceService>();
+			progress.Report(new StartupProgress(50, resourceService.GetString(ResourceFiles.InfoMessages, "Startup_CheckingDatabaseConnection")));
+			var connectionResult = await connectionConfigurationService.TestCurrentAsync();
+			if (!connectionResult.Succeeded)
+			{
+				progress.Report(new StartupProgress(60, resourceService.GetString(ResourceFiles.InfoMessages, "Startup_WaitingForDatabaseConfiguration"), true));
+				if (!await splash_Screen.ShowConnectionSetupAsync())
+				{
+					splash_Screen.Close();
+					Exit();
+					return;
+				}
+			}
+
+			await Startup.InitializeDatabaseAsync(progress);
 
 			m_window = new MainWindow(args);
 			m_window.SetDefaultIcon();

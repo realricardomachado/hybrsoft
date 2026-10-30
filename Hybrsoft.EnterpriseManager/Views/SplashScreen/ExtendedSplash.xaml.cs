@@ -1,7 +1,9 @@
 using Hybrsoft.EnterpriseManager.Common;
 using Hybrsoft.EnterpriseManager.Configuration;
+using Hybrsoft.EnterpriseManager.Views.ConnectionSetup;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,13 +31,21 @@ namespace Hybrsoft.EnterpriseManager.Views.SplashScreen
 			this.Title = "";
 			presenter.SetBorderAndTitleBar(false, false);
 
-			ProgressBarAnimation.Begin();
-			LoadDataAsync();
 		}
 
-		private static async void LoadDataAsync()
+		public void ReportProgress(StartupProgress progress)
 		{
-			await Startup.ConfigureAsync();
+			ProgressBar.IsIndeterminate = progress.IsIndeterminate;
+			if (!progress.IsIndeterminate)
+			{
+				ProgressBar.Value = progress.Value;
+			}
+			StatusTextBlock.Text = progress.Message;
+		}
+
+		public Task<bool> ShowConnectionSetupAsync()
+		{
+			return ConnectionSetupDialog.ShowAsync(Content.XamlRoot);
 		}
 	}
 }

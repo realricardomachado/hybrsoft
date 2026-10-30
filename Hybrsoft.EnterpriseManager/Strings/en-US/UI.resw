@@ -1095,4 +1095,64 @@
   <data name="SettingsView_AIFeaturesExpander.Header" xml:space="preserve">
     <value>AI Features</value>
   </data>
+  <data name="ConnectionSetupDialog_Title" xml:space="preserve">
+    <value>Configure database connection</value>
+  </data>
+  <data name="ConnectionSetupDialog_SaveAndContinue" xml:space="preserve">
+    <value>Save and continue</value>
+  </data>
+  <data name="ConnectionSetupDialog_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ConnectionSetupView_Description.Text" xml:space="preserve">
+    <value>Enter the SQL Server access details. The password is protected in Windows local storage and is not displayed again.</value>
+  </data>
+  <data name="ConnectionSetupView_ServerTextBox.Header" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="ConnectionSetupView_ServerTextBox.PlaceholderText" xml:space="preserve">
+    <value>server\instance or address,port</value>
+  </data>
+  <data name="ConnectionSetupView_DatabaseTextBox.Header" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="ConnectionSetupView_DatabaseTextBox.PlaceholderText" xml:space="preserve">
+    <value>hybrsoft</value>
+  </data>
+  <data name="ConnectionSetupView_AuthenticationComboBox.Header" xml:space="preserve">
+    <value>Authentication</value>
+  </data>
+  <data name="ConnectionSetupView_SqlAuthentication.Content" xml:space="preserve">
+    <value>SQL Server</value>
+  </data>
+  <data name="ConnectionSetupView_WindowsAuthentication.Content" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="ConnectionSetupView_UserNameTextBox.Header" xml:space="preserve">
+    <value>SQL Server user name</value>
+  </data>
+  <data name="ConnectionSetupView_PasswordBox.Header" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="ConnectionSetupView_TestButton.Content" xml:space="preserve">
+    <value>Test connection</value>
+  </data>
+  <data name="ConnectionSetupView_ConnectionSucceeded" xml:space="preserve">
+    <value>Connection established successfully.</value>
+  </data>
+  <data name="ConnectionSetupView_MissingWindowsFields" xml:space="preserve">
+    <value>Enter the server and database.</value>
+  </data>
+  <data name="ConnectionSetupView_MissingSqlFields" xml:space="preserve">
+    <value>Enter the server, database, user name, and password.</value>
+  </data>
+  <data name="ConnectionSetupView_TrustServerCertificateToggle.Header" xml:space="preserve">
+    <value>Trust server certificate</value>
+  </data>
+  <data name="ConnectionSetupView_TrustServerCertificateToggle.OffContent" xml:space="preserve">
+    <value>Recommended</value>
+  </data>
+  <data name="ConnectionSetupView_TrustServerCertificateToggle.OnContent" xml:space="preserve">
+    <value>Use only for a trusted local server without a valid certificate</value>
+  </data>
 </root>

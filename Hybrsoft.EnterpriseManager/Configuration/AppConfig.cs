@@ -1,5 +1,5 @@
-﻿using Hybrsoft.UI.Windows.Services;
-using Hybrsoft.Enums;
+﻿using Hybrsoft.Enums;
+using Hybrsoft.UI.Windows.Services;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
@@ -21,6 +21,11 @@ namespace Hybrsoft.EnterpriseManager.Configuration
 				.Build();
 
 			SettingsService = ServiceLocator.Current.GetService<ISettingsService>();
+#if DEBUG
+			SettingsService.Environment = EnvironmentType.Development;
+#else
+			SettingsService.Environment = EnvironmentType.Production;
+#endif
 		}
 
 		public static bool IsDevelopment => SettingsService.Environment == EnvironmentType.Development;
@@ -32,6 +37,5 @@ namespace Hybrsoft.EnterpriseManager.Configuration
 		public static string Azure_OpenAI_Embedding_Model => Configuration["AzureSettings:OPENAI_EMBEDDING_MODEL"];
 		public static int Azure_OpenAI_Embedding_Dimension => Configuration.GetValue<int>("AzureSettings:OPENAI_EMBEDDING_DIMENSION");
 
-		public static string SQLServerProdConnectionString => Configuration.GetConnectionString("SQLServerProd");
 	}
 }
