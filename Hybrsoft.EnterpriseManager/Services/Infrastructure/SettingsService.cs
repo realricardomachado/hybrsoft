@@ -2,11 +2,14 @@
 using Hybrsoft.EnterpriseManager.Configuration;
 using Hybrsoft.Enums;
 using Hybrsoft.UI.Windows.Services;
+using Windows.Graphics;
 
 namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 {
 	public class SettingsService(ISettingsStore settingsStore) : ISettingsService
 	{
+		private const string WindowWidthKey = "WindowWidth";
+		private const string WindowHeightKey = "WindowHeight";
 		private readonly ISettingsStore _settingsStore = settingsStore;
 
 		public string AppName => AppSettings.Current.AppName;
@@ -16,6 +19,20 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 		{
 			get => AppSettings.Current.UserName;
 			set => AppSettings.Current.UserName = value;
+		}
+
+		public SizeInt32 WindowSize
+		{
+			get => new()
+			{
+				Width = _settingsStore.Read(WindowWidthKey, 1280),
+				Height = _settingsStore.Read(WindowHeightKey, 840)
+			};
+			set
+			{
+				_settingsStore.Write(WindowWidthKey, value.Width);
+				_settingsStore.Write(WindowHeightKey, value.Height);
+			}
 		}
 
 		public string UserFirstName

@@ -1,10 +1,11 @@
-﻿using Hybrsoft.EnterpriseManager.Configuration;
+﻿using Hybrsoft.UI.Windows.Services;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using System;
 using System.Threading.Tasks;
 using Windows.Devices.Display;
 using Windows.Devices.Enumeration;
+using Windows.Graphics;
 
 namespace Hybrsoft.EnterpriseManager.Extensions
 {
@@ -34,9 +35,16 @@ namespace Hybrsoft.EnterpriseManager.Extensions
 			appWindow.Move(CenterPosition);
 		}
 
-		public static void SetDefaultWindowSize(this Window window)
+		public static void SetWindowSize(this Window window, SizeInt32 size, ISettingsService settingsService)
 		{
-			window.AppWindow.Resize(AppSettings.Current.WindowSizeDefault);
+			window.AppWindow.Resize(size);
+			window.AppWindow.Changed += (_, args) =>
+			{
+				if (args.DidSizeChange)
+				{
+					settingsService.WindowSize = window.AppWindow.Size;
+				}
+			};
 		}
 	}
 }

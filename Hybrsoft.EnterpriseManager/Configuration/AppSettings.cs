@@ -4,8 +4,6 @@ using Hybrsoft.UI.Windows.Services;
 using Microsoft.Extensions.Configuration;
 using System;
 using Windows.ApplicationModel;
-using Windows.Graphics;
-using Windows.Storage;
 
 namespace Hybrsoft.EnterpriseManager.Configuration
 {
@@ -20,26 +18,8 @@ namespace Hybrsoft.EnterpriseManager.Configuration
 		private static ISettingsStore SettingsStore
 			=> ServiceLocator.Current.GetService<ISettingsStore>();
 
-		private static ApplicationDataContainer LocalSettings => ApplicationData.Current.LocalSettings;
-
 		public string AppName => AppInfo.Current.DisplayInfo.DisplayName;
 		public string Version => Package.Current.Id.Version.ToFormattedString();
-
-		public SizeInt32 WindowSizeDefault
-		{
-			get => new() { Width = WindowWidth, Height = WindowHeight };
-			set { WindowWidth = value.Width; WindowHeight = value.Height; }
-		}
-		private int WindowWidth
-		{
-			get => ReadBootstrapSetting(nameof(WindowWidth), 1280);
-			set => LocalSettings.Values[nameof(WindowWidth)] = value;
-		}
-		private int WindowHeight
-		{
-			get => ReadBootstrapSetting(nameof(WindowHeight), 840);
-			set => LocalSettings.Values[nameof(WindowHeight)] = value;
-		}
 
 		public long UserID
 		{
@@ -101,25 +81,6 @@ namespace Hybrsoft.EnterpriseManager.Configuration
 		{
 			get => SettingsStore.Read<bool>(nameof(UseSemanticSearch));
 			set => SettingsStore.Write(nameof(UseSemanticSearch), value);
-		}
-
-		private static T ReadBootstrapSetting<T>(string key, T defaultValue = default)
-		{
-			try
-			{
-				if (!LocalSettings.Values.TryGetValue(key, out var value))
-					return defaultValue;
-
-				if (value is T typed)
-					return typed;
-
-				return (T)Convert.ChangeType(value, typeof(T));
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine($"Error reading bootstrap setting '{key}': {ex.Message}");
-				return defaultValue;
-			}
 		}
 
 		private static string GetDefaultSQLServerConnectionString()
