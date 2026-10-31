@@ -21,15 +21,20 @@ namespace Hybrsoft.EnterpriseManager.Services
 	{
 		private static readonly ConcurrentDictionary<Type, Type> _viewModelMap = new();
 
-		public NavigationService(IDataServiceFactory dataServiceFactory, IResourceService resourceService)
+		public NavigationService(
+			IDataServiceFactory dataServiceFactory,
+			IResourceService resourceService,
+			ISettingsService settingsService)
 		{
 			MainViewId = (int)WindowTracker.MainID;
 			_dataServiceFactory = dataServiceFactory;
 			_resourceService = resourceService;
+			_settingsService = settingsService;
 		}
 
 		private readonly IDataServiceFactory _dataServiceFactory;
 		private readonly IResourceService _resourceService;
+		private readonly ISettingsService _settingsService;
 
 		public int MainViewId { get; }
 
@@ -97,7 +102,7 @@ namespace Hybrsoft.EnterpriseManager.Services
 			Window newWindow = new();
 			WindowTracker.Register(newWindow);
 			newWindow.SetDefaultIcon();
-			newWindow.SetDefaultWindowSize();
+			newWindow.SetWindowSize(_settingsService.WindowSize, _settingsService);
 			await newWindow.SetWindowPositionToCenterAsync();
 
 			var frame = new Frame();

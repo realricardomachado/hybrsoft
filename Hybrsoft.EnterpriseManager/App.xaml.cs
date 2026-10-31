@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using System;
 using System.Threading.Tasks;
+using Windows.Graphics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -21,6 +22,8 @@ namespace Hybrsoft.EnterpriseManager
 		private Window m_window;
 		private ExtendedSplash splash_Screen;
 		private bool disposedValue;
+		private const int SplashWindowWidth = 1280;
+		private const int SplashWindowHeight = 840;
 
 		/// <summary>
 		/// Initializes the singleton application object.  This is the first line of authored code
@@ -49,7 +52,11 @@ namespace Hybrsoft.EnterpriseManager
 		private async Task ActivateAsync(Windows.ApplicationModel.Activation.IActivatedEventArgs args)
 		{
 			splash_Screen = new ExtendedSplash();
-			splash_Screen.SetDefaultWindowSize();
+			splash_Screen.AppWindow.Resize(new SizeInt32
+			{
+				Width = SplashWindowWidth,
+				Height = SplashWindowHeight
+			});
 			await splash_Screen.SetWindowPositionToCenterAsync();
 			splash_Screen.Activate();
 			splash_Screen.Closed += (_, _) => { ServiceLocator.DisposeByViewID(splash_Screen.AppWindow.Id.Value); };
@@ -77,7 +84,8 @@ namespace Hybrsoft.EnterpriseManager
 
 			m_window = new MainWindow(args);
 			m_window.SetDefaultIcon();
-			m_window.SetDefaultWindowSize();
+			var settingsService = ServiceLocator.Current.GetService<ISettingsService>();
+			m_window.SetWindowSize(settingsService.WindowSize, settingsService);
 			await m_window.SetWindowPositionToCenterAsync();
 			m_window.Activate();
 			m_window.Closed += async (_, _) =>
