@@ -77,6 +77,20 @@
 						</toolkit:SettingsCard>
 					</toolkit:SettingsExpander.Items>
 				</toolkit:SettingsExpander>
+				<!--  Database connection  -->
+				<TextBlock x:Uid="/UI/SettingsView_ConnectionSection_Subtitle"
+						   Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" />
+				<toolkit:SettingsExpander x:Uid="/UI/SettingsView_ConnectionExpander">
+					<toolkit:SettingsExpander.HeaderIcon>
+						<FontIcon Glyph="&#xE774;" />
+					</toolkit:SettingsExpander.HeaderIcon>
+					<toolkit:SettingsExpander.Items>
+						<toolkit:SettingsCard x:Uid="/UI/SettingsView_ConfigureConnectionCard">
+							<Button x:Uid="/UI/SettingsView_ConfigureConnectionButton"
+									Click="ConfigureConnectionButton_Click" />
+						</toolkit:SettingsCard>
+					</toolkit:SettingsExpander.Items>
+				</toolkit:SettingsExpander>
 				<!--  About  -->
 				<TextBlock x:Uid="/UI/SettingsView_AboutSection_Subtitle" Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" />
 				<toolkit:SettingsExpander x:Uid="/UI/SettingsView_AboutExpander" Header="{x:Bind ViewModel.AppName, Mode=OneWay}">

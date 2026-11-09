@@ -594,4 +594,13 @@
   <data name="Startup_Completed" xml:space="preserve">
     <value>Completed</value>
   </data>
+  <data name="ConnectionSetupViewModel_ConnectionEstablishedSuccessfully" xml:space="preserve">
+    <value>Connection established successfully.</value>
+  </data>
+  <data name="ConnectionSetupViewModel_MissingWindowsFields" xml:space="preserve">
+    <value>Enter the server and database.</value>
+  </data>
+  <data name="ConnectionSetupViewModel_MissingSqlFields" xml:space="preserve">
+    <value>Enter the server, database, user name, and password.</value>
+  </data>
 </root>

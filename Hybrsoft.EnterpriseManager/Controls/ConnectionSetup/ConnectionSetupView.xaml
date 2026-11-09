@@ -1,0 +1,42 @@
+<UserControl
+	x:Class="Hybrsoft.EnterpriseManager.Controls.ConnectionSetupView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<ScrollViewer VerticalScrollBarVisibility="Auto">
+		<StackPanel Spacing="12">
+			<TextBlock x:Uid="/UI/ConnectionSetupView_Description"
+					   TextWrapping="WrapWholeWords"
+					   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+			<TextBox x:Uid="/UI/ConnectionSetupView_ServerTextBox"
+					 Text="{x:Bind ViewModel.Server, Mode=TwoWay}" />
+			<TextBox x:Uid="/UI/ConnectionSetupView_DatabaseTextBox"
+					 Text="{x:Bind ViewModel.Database, Mode=TwoWay}" />
+			<ComboBox x:Uid="/UI/ConnectionSetupView_AuthenticationComboBox"
+					  SelectedIndex="{x:Bind ViewModel.AuthenticationIndex, Mode=TwoWay}">
+				<ComboBoxItem x:Uid="/UI/ConnectionSetupView_SqlAuthentication" />
+				<ComboBoxItem x:Uid="/UI/ConnectionSetupView_WindowsAuthentication" />
+			</ComboBox>
+			<StackPanel Spacing="12"
+						Visibility="{x:Bind ViewModel.IsSqlAuthentication, Mode=OneWay, Converter={StaticResource DefaultBoolToVisibilityConverter}}">
+				<TextBox x:Uid="/UI/ConnectionSetupView_UserNameTextBox"
+						 Text="{x:Bind ViewModel.UserName, Mode=TwoWay}" />
+				<PasswordBox x:Uid="/UI/ConnectionSetupView_PasswordBox"
+							 Password="{x:Bind ViewModel.Password, Mode=TwoWay}" />
+			</StackPanel>
+			<ToggleSwitch x:Uid="/UI/ConnectionSetupView_TrustServerCertificateToggle"
+						  IsOn="{x:Bind ViewModel.TrustServerCertificate, Mode=TwoWay}" />
+
+			<InfoBar Severity="{x:Bind ViewModel.ResultSeverity, Mode=OneWay}"
+					 IsOpen="{x:Bind ViewModel.IsResultOpen, Mode=OneWay}"
+					 IsClosable="False"
+					 IsIconVisible="True"
+					 Message="{x:Bind ViewModel.ResultMessage, Mode=OneWay}" />
+
+			<Button x:Uid="/UI/ConnectionSetupView_TestButton"
+					HorizontalAlignment="Left"
+					Command="{x:Bind ViewModel.TestConnectionCommand}" />
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

@@ -128,6 +128,7 @@ namespace Hybrsoft.EnterpriseManager.Configuration
 			serviceCollection.AddTransient<AppLogsViewModel>();
 
 			serviceCollection.AddTransient<SettingsViewModel>();
+			serviceCollection.AddTransient<ConnectionSetupViewModel>();
 
 			_rootServiceProvider = serviceCollection.BuildServiceProvider();
 		}

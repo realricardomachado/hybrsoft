@@ -228,4 +228,7 @@
   <data name="LostAndFoundDetailsViewModel_ThisLostAndFoundHasBeenDeletedExternally" xml:space="preserve">
     <value>Este achados e perdidos foi excluído externamente</value>
   </data>
+  <data name="SettingsViewModel_ConnectionSuccessfullyChanged" xml:space="preserve">
+    <value>Conexão Alterada com Sucesso.</value>
+  </data>
 </root>

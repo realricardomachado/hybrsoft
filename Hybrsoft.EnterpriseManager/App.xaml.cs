@@ -94,7 +94,7 @@ namespace Hybrsoft.EnterpriseManager
 				await logService.WriteAsync(LogType.Information, "App", "Closing", "Application End", $"Application ended by '{AppSettings.Current.UserName}'.");
 			};
 
-			await Task.Delay(200);
+			await ((MainWindow)m_window).InitializationTask;
 			splash_Screen.Close();
 		}
 

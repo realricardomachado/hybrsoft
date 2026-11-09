@@ -8,7 +8,9 @@ using Hybrsoft.UI.Windows.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -18,9 +20,10 @@ namespace Hybrsoft.EnterpriseManager.Views
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class MainShellView : Page
+	public sealed partial class MainShellView : Page, IStartupView
 	{
 		private INavigationService _navigationService = null;
+		private readonly TaskCompletionSource<bool> _initialization = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
 		public MainShellView()
 		{
@@ -32,6 +35,7 @@ namespace Hybrsoft.EnterpriseManager.Views
 		}
 
 		public MainShellViewModel ViewModel { get; }
+		public Task InitializationTask => _initialization.Task;
 
 		private void InitializeContext()
 		{
@@ -49,9 +53,20 @@ namespace Hybrsoft.EnterpriseManager.Views
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
 		{
-			await ViewModel.LoadAsync(e.Parameter as ShellArgs);
-			ViewModel.Subscribe();
-			await ViewModel.ShowLicenseExpirationWarningAsync();
+			try
+			{
+				await ViewModel.LoadAsync(e.Parameter as ShellArgs);
+				ViewModel.Subscribe();
+				_initialization.TrySetResult(true);
+				await ViewModel.ShowLicenseExpirationWarningAsync();
+			}
+			catch (Exception ex)
+			{
+				if (!_initialization.TrySetException(ex))
+				{
+					throw;
+				}
+			}
 		}
 
 		protected override void OnNavigatedFrom(NavigationEventArgs e)

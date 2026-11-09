@@ -594,4 +594,13 @@
   <data name="Startup_Completed" xml:space="preserve">
     <value>Concluído</value>
   </data>
+  <data name="ConnectionSetupViewModel_ConnectionEstablishedSuccessfully" xml:space="preserve">
+    <value>Conexão realizada com sucesso.</value>
+  </data>
+  <data name="ConnectionSetupViewModel_MissingWindowsFields" xml:space="preserve">
+    <value>Preencha servidor e banco de dados.</value>
+  </data>
+  <data name="ConnectionSetupViewModel_MissingSqlFields" xml:space="preserve">
+    <value>Preencha servidor, banco de dados, usuário e senha.</value>
+  </data>
 </root>

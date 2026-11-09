@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
+using System;
 using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -17,8 +18,10 @@ namespace Hybrsoft.EnterpriseManager.Views
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class LoginView : Page
+	public sealed partial class LoginView : Page, IStartupView
 	{
+		private readonly TaskCompletionSource<bool> _initialization = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
 		public LoginView()
 		{
 			ViewModel = ServiceLocator.Current.GetService<LoginViewModel>();
@@ -28,6 +31,7 @@ namespace Hybrsoft.EnterpriseManager.Views
 		}
 
 		public LoginViewModel ViewModel { get; }
+		public Task InitializationTask => _initialization.Task;
 
 		private void InitializeContext()
 		{
@@ -38,9 +42,20 @@ namespace Hybrsoft.EnterpriseManager.Views
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
 		{
-			_currentEffectMode = EffectMode.None;
-			await ViewModel.LoadAsync(e.Parameter as ShellArgs);
-			InitializeNavigation();
+			try
+			{
+				_currentEffectMode = EffectMode.None;
+				await ViewModel.LoadAsync(e.Parameter as ShellArgs);
+				InitializeNavigation();
+				_initialization.TrySetResult(true);
+			}
+			catch (Exception ex)
+			{
+				if (!_initialization.TrySetException(ex))
+				{
+					throw;
+				}
+			}
 		}
 
 		private void InitializeNavigation()

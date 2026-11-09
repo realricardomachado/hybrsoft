@@ -138,6 +138,24 @@
   <data name="SettingsView_AppearanceSection_Subtitle.Text" xml:space="preserve">
     <value>Aparência &amp; comportamento</value>
   </data>
+  <data name="SettingsView_ConnectionSection_Subtitle.Text" xml:space="preserve">
+    <value>Banco de dados</value>
+  </data>
+  <data name="SettingsView_ConnectionExpander.Description" xml:space="preserve">
+    <value>Configure a conexão SQL Server utilizada pela aplicação</value>
+  </data>
+  <data name="SettingsView_ConnectionExpander.Header" xml:space="preserve">
+    <value>Conexão SQL Server</value>
+  </data>
+  <data name="SettingsView_ConfigureConnectionCard.Description" xml:space="preserve">
+    <value>Abra a janela de configuração da conexão</value>
+  </data>
+  <data name="SettingsView_ConfigureConnectionCard.Header" xml:space="preserve">
+    <value>Configurações da conexão</value>
+  </data>
+  <data name="SettingsView_ConfigureConnectionButton.Content" xml:space="preserve">
+    <value>Configurar conexão</value>
+  </data>
   <data name="AppLogsDetails_Date.Text" xml:space="preserve">
     <value>Data</value>
   </data>
@@ -1101,11 +1119,14 @@
   <data name="ConnectionSetupDialog_SaveAndContinue" xml:space="preserve">
     <value>Salvar e continuar</value>
   </data>
+  <data name="ConnectionSetupDialog_Save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
   <data name="ConnectionSetupDialog_Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
   <data name="ConnectionSetupView_Description.Text" xml:space="preserve">
-    <value>Informe os dados de acesso ao SQL Server. A senha será protegida no armazenamento local do Windows e não será exibida novamente.</value>
+    <value>Informe os dados de acesso ao SQL Server. A senha é protegida no armazenamento local do Windows e as credenciais existentes permanecem mascaradas.</value>
   </data>
   <data name="ConnectionSetupView_ServerTextBox.Header" xml:space="preserve">
     <value>Servidor</value>
@@ -1137,22 +1158,7 @@
   <data name="ConnectionSetupView_TestButton.Content" xml:space="preserve">
     <value>Testar conexão</value>
   </data>
-  <data name="ConnectionSetupView_ConnectionSucceeded" xml:space="preserve">
-    <value>Conexão realizada com sucesso.</value>
-  </data>
-  <data name="ConnectionSetupView_MissingWindowsFields" xml:space="preserve">
-    <value>Preencha servidor e banco de dados.</value>
-  </data>
-  <data name="ConnectionSetupView_MissingSqlFields" xml:space="preserve">
-    <value>Preencha servidor, banco de dados, usuário e senha.</value>
-  </data>
   <data name="ConnectionSetupView_TrustServerCertificateToggle.Header" xml:space="preserve">
     <value>Confiar no certificado do servidor</value>
-  </data>
-  <data name="ConnectionSetupView_TrustServerCertificateToggle.OffContent" xml:space="preserve">
-    <value>Recomendado</value>
-  </data>
-  <data name="ConnectionSetupView_TrustServerCertificateToggle.OnContent" xml:space="preserve">
-    <value>Use somente para servidor local confiável sem certificado válido</value>
   </data>
 </root>

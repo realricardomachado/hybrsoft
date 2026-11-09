@@ -24,16 +24,21 @@ namespace Hybrsoft.EnterpriseManager
 	/// </summary>
 	public sealed partial class MainWindow : Window
 	{
+		private readonly TaskCompletionSource<bool> _activated = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
 		public MainWindow(IActivatedEventArgs args)
 		{
 			this.InitializeComponent();
 			WindowTracker.Register(this);
 			ThemeExtensions.TrySetMicaBackdrop(this, true);
+			Activated += OnActivated;
 
-			Navigate(args);
+			InitializationTask = InitializeAsync(args);
 		}
 
-		private async void Navigate(IActivatedEventArgs args)
+		public Task InitializationTask { get; }
+
+		private async Task InitializeAsync(IActivatedEventArgs args)
 		{
 			var activationInfo = ActivationService.GetActivationInfo(args);
 			var shellArgs = new ShellArgs
@@ -54,9 +59,31 @@ namespace Hybrsoft.EnterpriseManager
 			rootFrame.Navigate(typeof(MainShellView), shellArgs);
 			var loginService = ServiceLocator.Current.GetService<ILoginService>();
 			loginService.IsAuthenticated = true;
+			await WaitForStartupViewInitializationAsync();
 #else
 			rootFrame.Navigate(typeof(LoginView), shellArgs);
+			await WaitForStartupViewInitializationAsync();
 #endif
+			await _activated.Task;
+		}
+
+		private async Task WaitForStartupViewInitializationAsync()
+		{
+			if (rootFrame.Content is not IStartupView startupView)
+			{
+				throw new InvalidOperationException("The initial page does not expose its initialization task.");
+			}
+
+			await startupView.InitializationTask;
+		}
+
+		private void OnActivated(object sender, WindowActivatedEventArgs args)
+		{
+			if (args.WindowActivationState != WindowActivationState.Deactivated)
+			{
+				_activated.TrySetResult(true);
+				Activated -= OnActivated;
+			}
 		}
 
 		private static async Task<UserInfo> TryGetUserInfoAsync(IActivatedEventArgsWithUser argsWithUser)

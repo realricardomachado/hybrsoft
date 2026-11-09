@@ -1,5 +1,7 @@
 using Hybrsoft.UI.Windows.ViewModels;
 using Hybrsoft.EnterpriseManager.Configuration;
+using Hybrsoft.EnterpriseManager.Controls;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
@@ -24,6 +26,14 @@ namespace Hybrsoft.EnterpriseManager.Views
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
 		{
 			await ViewModel.LoadAsync(e.Parameter as SettingsArgs);
+		}
+
+		private async void ConfigureConnectionButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (await ConnectionSetupDialog.ShowAsync(Content.XamlRoot, isStartup: false))
+			{
+				ViewModel.NotifyConnectionSaved();
+			}
 		}
 	}
 }
