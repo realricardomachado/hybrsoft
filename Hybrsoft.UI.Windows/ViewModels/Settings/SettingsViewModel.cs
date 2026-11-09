@@ -124,5 +124,12 @@ namespace Hybrsoft.UI.Windows.ViewModels
 				}
 			});
 		}
+
+		public void NotifyConnectionSaved()
+		{
+			string title = ResourceService.GetString<SettingsViewModel>(ResourceFiles.Warnings, "ConnectionSuccessfullyChanged");
+			string message = ResourceService.GetString<SettingsViewModel>(ResourceFiles.Warnings, "PleaseRestartTheAppForTheChangesToBeFullyApplied");
+			WarningMessage(title, message);
+		}
 	}
 }

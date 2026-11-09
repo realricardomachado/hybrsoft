@@ -1,24 +1,26 @@
+using Hybrsoft.EnterpriseManager.Configuration;
+using Hybrsoft.Enums;
+using Hybrsoft.UI.Windows.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Threading.Tasks;
-using Hybrsoft.EnterpriseManager.Configuration;
-using Hybrsoft.Enums;
-using Hybrsoft.UI.Windows.Services;
 
-namespace Hybrsoft.EnterpriseManager.Views.ConnectionSetup
+namespace Hybrsoft.EnterpriseManager.Controls
 {
 	public static class ConnectionSetupDialog
 	{
-		public static async Task<bool> ShowAsync(XamlRoot xamlRoot)
+		public static async Task<bool> ShowAsync(XamlRoot xamlRoot, bool isStartup = true)
 		{
 			var resourceService = ServiceLocator.Current.GetService<IResourceService>();
 			var view = new ConnectionSetupView();
+			var saveButtonText = resourceService.GetString(ResourceFiles.UI,
+				isStartup ? "ConnectionSetupDialog_SaveAndContinue" : "ConnectionSetupDialog_Save");
 			var dialog = new ContentDialog
 			{
 				Title = resourceService.GetString(ResourceFiles.UI, "ConnectionSetupDialog_Title"),
 				Content = view,
-				PrimaryButtonText = resourceService.GetString(ResourceFiles.UI, "ConnectionSetupDialog_SaveAndContinue"),
+				PrimaryButtonText = saveButtonText,
 				CloseButtonText = resourceService.GetString(ResourceFiles.UI, "ConnectionSetupDialog_Cancel"),
 				DefaultButton = ContentDialogButton.Primary,
 				XamlRoot = xamlRoot
