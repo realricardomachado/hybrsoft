@@ -37,14 +37,40 @@ namespace Hybrsoft.EnterpriseManager.Extensions
 
 		public static void SetWindowSize(this Window window, SizeInt32 size, ISettingsService settingsService)
 		{
-			window.AppWindow.Resize(size);
+			AppWindow appWindow = window.AppWindow;
+			appWindow.Resize(size);
 			window.AppWindow.Changed += (_, args) =>
 			{
-				if (args.DidSizeChange)
+				if (appWindow.Presenter is not OverlappedPresenter presenter)
 				{
-					settingsService.WindowSize = window.AppWindow.Size;
+					return;
+				}
+
+				if (args.DidSizeChange && presenter.State == OverlappedPresenterState.Restored)
+				{
+					settingsService.WindowSize = appWindow.Size;
+				}
+
+				if (args.DidPresenterChange)
+				{
+					if (presenter.State == OverlappedPresenterState.Maximized)
+					{
+						settingsService.IsWindowMaximized = true;
+					}
+					else if (presenter.State == OverlappedPresenterState.Restored)
+					{
+						settingsService.IsWindowMaximized = false;
+					}
 				}
 			};
+		}
+
+		public static void SetWindowMaximized(this Window window, bool isMaximized)
+		{
+			if (isMaximized && window.AppWindow.Presenter is OverlappedPresenter presenter)
+			{
+				presenter.Maximize();
+			}
 		}
 	}
 }

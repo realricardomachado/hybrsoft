@@ -87,6 +87,7 @@ namespace Hybrsoft.EnterpriseManager
 			var settingsService = ServiceLocator.Current.GetService<ISettingsService>();
 			m_window.SetWindowSize(settingsService.WindowSize, settingsService);
 			await m_window.SetWindowPositionToCenterAsync();
+			m_window.SetWindowMaximized(settingsService.IsWindowMaximized);
 			m_window.Activate();
 			m_window.Closed += async (_, _) =>
 			{

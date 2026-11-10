@@ -10,6 +10,7 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 	{
 		private const string WindowWidthKey = "WindowWidth";
 		private const string WindowHeightKey = "WindowHeight";
+		private const string IsWindowMaximizedKey = "IsWindowMaximized";
 		private readonly ISettingsStore _settingsStore = settingsStore;
 
 		public string AppName => AppSettings.Current.AppName;
@@ -33,6 +34,12 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 				_settingsStore.Write(WindowWidthKey, value.Width);
 				_settingsStore.Write(WindowHeightKey, value.Height);
 			}
+		}
+
+		public bool IsWindowMaximized
+		{
+			get => _settingsStore.Read(IsWindowMaximizedKey, false);
+			set => _settingsStore.Write(IsWindowMaximizedKey, value);
 		}
 
 		public string UserFirstName
