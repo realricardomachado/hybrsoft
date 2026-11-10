@@ -11,6 +11,7 @@ namespace Hybrsoft.UI.Windows.Services
 		string UserFirstName { get; set; }
 		string UserLastName { get; set; }
 		SizeInt32 WindowSize { get; set; }
+		bool IsWindowMaximized { get; set; }
 		char PasswordChar { get; }
 		EnvironmentType Environment { get; set; }
 		bool UseSemanticSearch { get; set; }

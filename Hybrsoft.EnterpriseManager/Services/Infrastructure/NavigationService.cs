@@ -104,6 +104,7 @@ namespace Hybrsoft.EnterpriseManager.Services
 			newWindow.SetDefaultIcon();
 			newWindow.SetWindowSize(_settingsService.WindowSize, _settingsService);
 			await newWindow.SetWindowPositionToCenterAsync();
+			newWindow.SetWindowMaximized(_settingsService.IsWindowMaximized);
 
 			var frame = new Frame();
 			var args = new ShellArgs
