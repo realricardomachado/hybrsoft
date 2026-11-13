@@ -22,8 +22,8 @@ namespace Hybrsoft.EnterpriseManager
 		private Window m_window;
 		private ExtendedSplash splash_Screen;
 		private bool disposedValue;
-		private const int SplashWindowWidth = 1280;
-		private const int SplashWindowHeight = 840;
+		private const int SplashWindowWidth = 1024;
+		private const int SplashWindowHeight = 640;
 
 		/// <summary>
 		/// Initializes the singleton application object.  This is the first line of authored code
