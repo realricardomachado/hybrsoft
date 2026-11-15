@@ -40,7 +40,7 @@ namespace Hybrsoft.EnterpriseManager.Services
 
 			try
 			{
-				GeneratedEmbeddings<Embedding<float>> result = await _generator.GenerateAsync([input]);
+				GeneratedEmbeddings<Embedding<float>> result = await _generator.GenerateAsync((string[])[input]);
 				return new SqlVector<float>(result[0].Vector.ToArray());
 			}
 			catch (Exception ex)
@@ -55,19 +55,19 @@ namespace Hybrsoft.EnterpriseManager.Services
 			ArgumentNullException.ThrowIfNull(inputs);
 
 			if (!IsConfigured)
-				return [.. Enumerable.Repeat(CreateVectorNull(), inputs.Count())];
+				return (SqlVector<float>[])[.. Enumerable.Repeat(CreateVectorNull(), inputs.Count())];
 
 			try
 			{
-				List<string> inputList = inputs.ToList();
+				List<string> inputList = [.. inputs];
 				GeneratedEmbeddings<Embedding<float>> result = await _generator.GenerateAsync(inputList);
 
-				return [.. result.Select(embedding => new SqlVector<float>(embedding.Vector.ToArray()))];
+				return (SqlVector<float>[])[.. result.Select(embedding => new SqlVector<float>(embedding.Vector.ToArray()))];
 			}
 			catch (Exception ex)
 			{
 				await HandleFailureAsync("Generate Embeddings", ex);
-				return [.. Enumerable.Repeat(CreateVectorNull(), inputs.Count())];
+				return (SqlVector<float>[])[.. Enumerable.Repeat(CreateVectorNull(), inputs.Count())];
 			}
 		}
 

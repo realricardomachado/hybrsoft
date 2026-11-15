@@ -16,7 +16,7 @@ namespace Hybrsoft.EnterpriseManager.Extensions
 
 		static public IList<ItemIndexRange> Normalize(this IList<ItemIndexRange> ranges)
 		{
-			return Normalize((IEnumerable<ItemIndexRange>)ranges).ToList();
+			return [.. Normalize((IEnumerable<ItemIndexRange>)ranges)];
 		}
 		static public IEnumerable<ItemIndexRange> Normalize(this IEnumerable<ItemIndexRange> ranges)
 		{
@@ -24,16 +24,16 @@ namespace Hybrsoft.EnterpriseManager.Extensions
 			{
 				return Merge(ranges.Skip(1), ranges.First());
 			}
-			return [];
+			return (ItemIndexRange[])[];
 		}
 
 		static public IList<ItemIndexRange> Merge(this IList<ItemIndexRange> ranges, ItemIndexRange range)
 		{
-			return Merge((IEnumerable<ItemIndexRange>)ranges, range).ToList();
+			return [.. Merge((IEnumerable<ItemIndexRange>)ranges, range)];
 		}
 		static public IEnumerable<ItemIndexRange> Merge(this IEnumerable<ItemIndexRange> ranges, ItemIndexRange range)
 		{
-			var sorted = ranges.Concat([range]).OrderByDescending(r => r.Length).OrderBy(r => r.FirstIndex);
+			var sorted = ranges.Concat((ItemIndexRange[])[range]).OrderByDescending(r => r.Length).OrderBy(r => r.FirstIndex);
 			foreach (var item in MergeInternal(sorted.Skip(1), sorted.First()))
 			{
 				yield return item;
@@ -96,7 +96,7 @@ namespace Hybrsoft.EnterpriseManager.Extensions
 
 		static public IList<ItemIndexRange> Subtract(this IList<ItemIndexRange> ranges, ItemIndexRange range)
 		{
-			return Subtract((IEnumerable<ItemIndexRange>)ranges, range).ToList();
+			return [.. Subtract((IEnumerable<ItemIndexRange>)ranges, range)];
 		}
 		static public IEnumerable<ItemIndexRange> Subtract(this IEnumerable<ItemIndexRange> ranges, ItemIndexRange range)
 		{

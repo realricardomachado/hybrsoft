@@ -38,7 +38,7 @@ namespace Hybrsoft.UI.Windows.ViewModels
 
 		public override async Task LoadAsync(ShellArgs args)
 		{
-			NavigationItems = [.. GetItems()];
+			NavigationItems = (NavigationItemModel[])[.. GetItems()];
 			await base.LoadAsync(args);
 			await UpdateAppLogBadge();
 		}
@@ -142,7 +142,7 @@ namespace Hybrsoft.UI.Windows.ViewModels
 				}
 				var validChildren = item.Children.Where(c => HasUserPermission(c));
 				item.Children = [.. validChildren];
-				return item.Children.Any();
+				return item.Children.Count != 0;
 			}
 			return AuthorizationService.CanAccessViewModel(item.ViewModel);
 		}

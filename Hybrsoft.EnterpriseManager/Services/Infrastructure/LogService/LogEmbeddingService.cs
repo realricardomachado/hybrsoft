@@ -51,7 +51,7 @@ namespace Hybrsoft.UI.Windows.Services
 					newEmbeddings[j].Embedding = generatedEmbeddings[j];
 				}
 
-				await dataSource.UpdateAppLogEmbeddingsAsync([.. newEmbeddings]);
+				await dataSource.UpdateAppLogEmbeddingsAsync(newEmbeddings);
 			}
 		}
 	}

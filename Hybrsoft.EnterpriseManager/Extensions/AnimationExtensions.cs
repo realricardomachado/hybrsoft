@@ -105,7 +105,7 @@ namespace Hybrsoft.EnterpriseManager.Extensions
 			};
 
 			var compositor = GetCurrentCompositor();
-			var factory = compositor.CreateEffectFactory(effect, ["Blur.BlurAmount"]);
+			var factory = compositor.CreateEffectFactory(effect, (string[])["Blur.BlurAmount"]);
 			var brush = factory.CreateBrush();
 			brush.SetSourceParameter("source", compositor.CreateBackdropBrush());
 			return brush;

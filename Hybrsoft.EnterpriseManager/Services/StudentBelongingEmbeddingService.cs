@@ -50,7 +50,7 @@ namespace Hybrsoft.EnterpriseManager.Services
 					newEmbeddings[j].Embedding = generatedEmbeddings[j];
 				}
 
-				await dataService.UpdateStudentBelongingEmbeddingsAsync([.. newEmbeddings]);
+				await dataService.UpdateStudentBelongingEmbeddingsAsync(newEmbeddings);
 			}
 		}
 	}

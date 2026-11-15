@@ -46,7 +46,7 @@ namespace Hybrsoft.EnterpriseManager.Common.VirtualCollection
 
 		public void RangesChanged(ItemIndexRange visibleRange, IReadOnlyList<ItemIndexRange> trackedItems)
 		{
-			FetchRanges([.. trackedItems.Normalize()]);
+			FetchRanges((ItemIndexRange[])[.. trackedItems.Normalize()]);
 		}
 
 		private readonly Lock _sync = new();

@@ -15,7 +15,7 @@ namespace Hybrsoft.EnterpriseManager.Common.VirtualCollection
 
 		public IReadOnlyList<ItemIndexRange> GetSelectedRanges()
 		{
-			return [.. _rangeSelection];
+			return (ItemIndexRange[])[.. _rangeSelection];
 		}
 
 		public bool IsSelected(int index)
