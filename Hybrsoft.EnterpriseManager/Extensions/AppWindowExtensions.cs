@@ -50,17 +50,27 @@ namespace Hybrsoft.EnterpriseManager.Extensions
 				{
 					settingsService.WindowSize = appWindow.Size;
 				}
+			};
+		}
 
-				if (args.DidPresenterChange)
+		public static void TrackWindowMaximizedState(this Window window, ISettingsService settingsService)
+		{
+			AppWindow appWindow = window.AppWindow;
+			appWindow.Changed += (_, args) =>
+			{
+				if ((!args.DidSizeChange && !args.DidPresenterChange) ||
+					appWindow.Presenter is not OverlappedPresenter presenter)
 				{
-					if (presenter.State == OverlappedPresenterState.Maximized)
-					{
-						settingsService.IsWindowMaximized = true;
-					}
-					else if (presenter.State == OverlappedPresenterState.Restored)
-					{
-						settingsService.IsWindowMaximized = false;
-					}
+					return;
+				}
+
+				if (presenter.State == OverlappedPresenterState.Maximized && !settingsService.IsWindowMaximized)
+				{
+					settingsService.IsWindowMaximized = true;
+				}
+				else if (presenter.State == OverlappedPresenterState.Restored && settingsService.IsWindowMaximized)
+				{
+					settingsService.IsWindowMaximized = false;
 				}
 			};
 		}
