@@ -21,11 +21,14 @@ namespace Hybrsoft.EnterpriseManager.Services.Infrastructure
 				ViewMode = PickerViewMode.Thumbnail,
 				SuggestedStartLocation = PickerLocationId.PicturesLibrary
 			};
-			picker.FileTypeFilter.Add(".jpg");
-			picker.FileTypeFilter.Add(".jpeg");
-			picker.FileTypeFilter.Add(".png");
-			picker.FileTypeFilter.Add(".bmp");
-			picker.FileTypeFilter.Add(".gif");
+			picker.FileTypeChoices.Add("Image files",
+			[
+				".jpg",
+				".jpeg",
+				".png",
+				".bmp",
+				".gif"
+			]);
 
 			var result = await picker.PickSingleFileAsync();
 			if (result is null)
